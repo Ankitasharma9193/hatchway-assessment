@@ -1,6 +1,6 @@
 <template>
-  <div class="keyword-input__keyword float-left mr-2 rounded">
-    {{ name }}<span @click="onClose(name)">x</span>
+  <div class="keyword-input__keyword ">
+    {{ name }}<span @click="onClose(name)">&nbsp;x</span>
   </div>
 </template>
 

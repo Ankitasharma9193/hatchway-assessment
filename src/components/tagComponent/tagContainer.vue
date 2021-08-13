@@ -11,16 +11,21 @@
 
     <input
       class="'keyword-input__text'"
+      ref="keyword-input"
+      v-model="tagname"
       type="text"
       placeholder="Enter your tag..."
-      v-model="tagName"
+      @keydown.enter="handleEnter"
       @keydown.188.prevent="onAdd"
+      @keydown.32="onAdd"
     />
   </div>
 </template>
 
 <script>
 import tag from "./tag.vue";
+import { mapActions } from "vuex";
+
 export default {
   name: "tagContainer",
   components: {
@@ -28,13 +33,33 @@ export default {
   },
   data() {
     return {
-      tagsInputs: ["ankita", "sharma"],
+      tagsInputs: [],
+      tagname: "",
     };
   },
-
+  props: ["recordId"],
   methods: {
-    onClose: function(tag) {
+    onClose(tag) {
       this.tagsInputs = this.tagsInputs.filter((item) => item !== tag);
+    },
+    onAdd() {
+      if (!this.tagname.trim()) {
+        return;
+      }
+      console.log(this.tagname);
+      const tagsToAdd = [...this.tagname.split(",")].map((item) => item.trim());
+      console.log(tagsToAdd);
+
+      this.tagsInputs = [...this.tagsInputs, ...tagsToAdd];
+      this.tagname = "";
+    },
+    ...mapActions("records", ["updateTags"]),
+    handleEnter(e) {
+      e.preventDefault();
+      console.log("I am searching for record id", this.recordId);
+      this.onAdd(e);
+      //when the tag gets added it throws action to store in the state
+      this.updateTags({ tagInputs: this.tagsInputs, recordId: this.recordId });
     },
   },
 };

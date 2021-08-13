@@ -15,7 +15,7 @@
     <div class="company">Company:{{ record.company }}</div>
     <div class="skills">Skill:{{ record.skill }}</div>
     <div class="average">Average: {{ getAverageMethod(record.grades) }}%</div>
-    <tag-container />
+    <tag-container :recordId="record.id" />
 
     <div class="grades-for" v-show="showGrades">
       <div v-for="(grade, index) in record.grades" :key="grade">
