@@ -3,9 +3,12 @@ import App from './App.vue'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import VueImg from 'v-img';
 
-Vue.use(VueImg);
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+Vue.use(BootstrapVue);
 
 import {store} from './store/index.js'
 

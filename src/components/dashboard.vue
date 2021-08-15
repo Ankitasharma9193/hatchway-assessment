@@ -1,16 +1,18 @@
 <template>
   <div class="recordList">
-    <div>
+    <div class="name-searchBar">
       <searchBar @searchTextevent="updateSearchedText" />
     </div>
-    <div>
+
+    <div class="tag-searchBar">
       <keyword-search-bar @searchTagRecordEvent="recordsById" />
     </div>
+
     <!-- get the search function here as that has id of tags records -->
 
     <div class="student-list">
       <div id="v-for-object" class="recordList">
-        <div v-for="onerecord in recordMatchByTagSearch" :key="onerecord.id">
+        <div v-for="onerecord in intersectionOfSearch" :key="onerecord.id">
           <student :record="onerecord" />
         </div>
       </div>
@@ -62,12 +64,13 @@ export default {
     },
 
     recordMatchByTagSearch() {
+      console.log(this.recordIds.length);
       if (this.recordIds.length > 0) {
         let tagFilteredRecords = [];
         for (let i = 0; i < this.recordIds.length; i++) {
           this.studentRecords.forEach((item) => {
             if (item.id == this.recordIds[i]) {
-              tagFilteredRecords.push(item);
+              tagFilteredRecords.push(item.id);
             }
           });
         }
@@ -76,6 +79,59 @@ export default {
       } else {
         return this.studentRecords;
       }
+    },
+
+    //intersectionSearch() {
+    //   let searchBarResultIds = [],
+    //     tagBarResultIds = [];
+
+    //   if (this.searchText || this.recordIds.length > 0) {
+    //     if (this.searchText) {
+    //       for (let i = 0; i < this.recordMatchBySearchBar.length; i++) {
+    //         searchBarResultIds.push(this.recordMatchBySearchBar[i].id);
+    //         console.log("searchbar ...", searchBarResultIds);
+    //       }
+    //     }
+    //     if (this.recordIds.length > 0) {
+    //       for (let i = 0; i < this.recordMatchByTagSearch.length; i++) {
+    //         tagBarResultIds.push(this.recordMatchByTagSearch[i].id);
+    //         console.log("tag search....", tagBarResultIds);
+    //       }
+    //     }
+
+    //     // let result = [...searchBarResultIds, ...tagBarResultIds]; --- this is OR
+    //     let result = searchBarResultIds.filter((value) =>
+    //       tagBarResultIds.includes(value)
+    //     );
+
+    //     console.log("result of intersection is", result);
+
+    //     let finalFilter = [];
+    //     for (let i = 0; i < result.length; i++) {
+    //       this.studentRecords.forEach((value) => {
+    //         if (value.id == result[i]) {
+    //           console.log(value.id, result[i]);
+    //           finalFilter.push(value);
+    //         }
+    //       });
+    //     }
+
+    //     console.log("final filter is ...", finalFilter);
+    //     return finalFilter;
+    //   } else {
+    //     return this.studentRecords;
+    //   }
+    // },
+    intersectionOfSearch() {
+      console.log(
+        "inside intersection search",
+        this.recordMatchBySearchBar,
+        this.recordMatchByTagSearch
+      );
+      let intersection = this.recordMatchByTagSearch.filter((x) =>
+        this.recordMatchBySearchBar.includes(x)
+      );
+      return intersection;
     },
   },
 
@@ -104,5 +160,13 @@ export default {
 
 .recordList {
   font-family: "Raleway", sans-serif;
+}
+.name-searchBar {
+  margin-left: 20px;
+  border: none;
+}
+.tag-searchBar {
+  margin-left: 20px;
+  border: none;
 }
 </style>

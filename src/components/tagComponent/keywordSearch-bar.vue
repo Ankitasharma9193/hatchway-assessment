@@ -43,20 +43,24 @@ export default {
   },
   methods: {
     ...mapActions("records", ["updateTags"]),
+
     searchTagRecord(tagSearchtext) {
-      console.log(tagSearchtext);
-      const tagToRecordfiltered = Object.entries(this.idToRecordMap)
+      let tagToRecordfiltered = [];
+      if (!tagSearchtext) {
+        return tagToRecordfiltered;
+      }
+
+      Object.entries(this.idToRecordMap)
         .filter(([, values]) => {
           return values.some((value) => {
-            console.log("the value is", value);
-            console.log("the tagsearchtext is", tagSearchtext);
-            return value.startsWith(tagSearchtext);
+            let valueStartsWith = value.startsWith(tagSearchtext);
+
+            return valueStartsWith;
           });
         })
-        .reduce((acc, [key]) => {
-          acc.push(key);
-          return acc;
-        }, []);
+        .forEach(([key]) => {
+          tagToRecordfiltered.push(key);
+        });
       console.log("tag filtered ......", tagToRecordfiltered);
       return tagToRecordfiltered;
     },
